@@ -1,0 +1,34 @@
+version: '3'
+services:
+  ubunt_printenv:
+    image: ubuntu
+    container_name: ubunt_printenv  
+    command: printenv    
+    environment:                                          
+      java_arguments: >-
+                      -Dcom.sun.management.jmxremote
+                      -Djava.rmi.server.hostname=127.0.0.1
+                      -Dcom.sun.management.jmxremote.port=8081
+                      -Dcom.sun.management.jmxremote.rmi.port=8081
+                      -Dcom.sun.management.jmxremote.local.only=false
+                      -Dcom.sun.management.jmxremote.authenticate=false
+                      -Dcom.sun.management.jmxremote.ssl=false
+      java_class_path: "./*\
+                         :lib/*"
+                         
+###############OUTPUT###########################                         
+#PS C:/test> docker-compose up
+#Recreating ubunt_printenv ...
+#Recreating ubunt_printenv ... done
+#Attaching to ubunt_printenv
+#ubunt_printenv    | PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+#ubunt_printenv    | HOSTNAME=afsdddc9ae9a94
+#ubunt_printenv    | java_class_path=./*:lib/*
+#ubunt_printenv    | java_arguments=-Dcom.sun.management.jmxremote -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.port=8081 -Dcom.sun.management.jmxremote.rmi.port=8081 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+#ubunt_printenv    | HOME=/root
+#ubunt_printenv exited with code 0
+
+      
+
+
+      
