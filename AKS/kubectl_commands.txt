@@ -1,0 +1,11 @@
+#Port forwarding. access via localhost:8080 without external ip
+kubectl port-forward jetty 8080:8080
+
+#Logs
+kubectl logs jetty
+
+#Copy file from/to local machine to/from pod
+kubectl cp ./typikSecret ubuntu:/var/test
+
+#Clean up
+kubectl delete deployments --all

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: ubuntu
+spec:
+ containers:
+  - image: ubuntu
+    name: ubuntu
+    command: [ "bash", "-c", "while true; do echo 'hi'; sleep 60; done"]
+    volumeMounts:
+      - name: azure-file-share
+        mountPath: /var/test
+ volumes:
+  - name: azure-file-share
+    azureFile:
+      secretName: azure-file-share-secret
+      shareName: jetty-share
+      readOnly: false

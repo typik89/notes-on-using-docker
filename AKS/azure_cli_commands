@@ -1,0 +1,36 @@
+#https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough
+
+#Login to azure
+az login
+
+#Enable AKS
+az provider register -n Microsoft.Network
+az provider register -n Microsoft.Storage
+az provider register -n Microsoft.Compute
+az provider register -n Microsoft.ContainerService
+
+#Create resource groupe
+az group create --name aksGroup --location westeurope
+
+#Create AKS cluster
+az aks create --resource-group aksGroup --name aksCluster --node-count 1 --generate-ssh-keys -k 1.9.2
+
+#Connect to registry
+az aks get-credentials --resource-group aksGroup --name aksCluster
+
+#Create registry
+az acr create --resource-group aksGroup --name aksClusterRegistry --sku Basic --admin-enabled true
+
+#Create service principal to access acr https://stackoverflow.com/questions/49512099/aks-cant-pull-image-from-an-acr/49518263#49518263
+# Execute command 'az acr show --name aksClusterRegistry --query id --output tsv' to 
+az ad sp create-for-rbac --name acr-sp --scopes /subscriptions/a501f8ff-7104-4853-868e-411b39acf9ae/resourceGroups/aksGroup/providers/Microsoft.ContainerRegistry/registries/aksClusterRegistry
+
+#Create secret. Get infromation about username and password from output previous command
+kubectl create secret docker-registry acr-auth --docker-server aksclusterregistry.azurecr.io --docker-username 1f39fb5b-5fb0-4810-a48d-15cfbc1432b9 --docker-password 9e5832d0-70f1-4ee3-b6dc-ebddd189ae17 --docker-email some@email.com
+
+
+#Proxy dashboard
+az aks browse --resource-group aksGroup --name aksCluster
+
+
+

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jetty
+spec:
+  containers:
+  - name: jetty
+    image: aksclusterregistry.azurecr.io/jetty
+  imagePullSecrets:
+  - name: acr-auth
