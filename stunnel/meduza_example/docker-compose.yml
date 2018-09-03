@@ -1,0 +1,11 @@
+stunnel:
+  image: typik/stunnel
+  ports:
+    - "1194:1194"
+  volumes:
+    - "./stunnel.conf:/etc/stunnel/stunnel.conf"
+
+
+
+
+
