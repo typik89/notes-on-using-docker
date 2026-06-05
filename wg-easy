@@ -1,0 +1,45 @@
+services:
+  wg-easy:
+    image: ghcr.io/wg-easy/wg-easy:latest
+    container_name: wg-easy
+
+    environment:
+      # публичный IP или DNS имя сервера
+      - WG_HOST=vpn.example.com
+
+      # пароль от веб-интерфейса
+      - PASSWORD_HASH=$2y$10$XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+      # WireGuard порт
+      - WG_PORT=51820
+
+      # DNS для клиентов
+      - WG_DEFAULT_DNS=1.1.1.1,8.8.8.8
+
+      # VPN сеть
+      - WG_DEFAULT_ADDRESS=10.8.0.x
+
+      # полный туннель
+      - WG_ALLOWED_IPS=0.0.0.0/0,::/0
+
+      # keepalive для мобильных клиентов
+      - WG_PERSISTENT_KEEPALIVE=25
+
+      - TZ=Europe/Amsterdam
+
+    volumes:
+      - ./wireguard:/etc/wireguard
+
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv6.conf.all.forwarding=1
+
+    restart: unless-stopped
